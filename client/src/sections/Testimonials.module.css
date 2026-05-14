@@ -1,0 +1,123 @@
+.testimonials {
+  background: var(--color-surface-alt);
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-20);
+  align-items: center;
+}
+
+.left {}
+
+.heading {
+  font-size: var(--text-5xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: var(--space-8);
+}
+
+.nav {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.navDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-surface-3);
+  border: none;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  padding: 0;
+}
+
+.navDotActive {
+  background: var(--color-accent);
+  transform: scale(1.4);
+}
+
+/* Quote side */
+.quoteWrap {
+  position: relative;
+}
+
+.quoteMark {
+  font-family: Georgia, serif;
+  font-size: 120px;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.15;
+  position: absolute;
+  top: -20px;
+  left: -16px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.quote {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-text-strong);
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+  margin-bottom: var(--space-8);
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-accent), #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.authorName {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--color-text-strong);
+}
+
+.authorTitle {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+.stars {
+  font-size: var(--text-sm);
+  color: var(--color-gold);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+@media (max-width: 768px) {
+  .inner { grid-template-columns: 1fr; gap: var(--space-12); }
+  .quote { font-size: var(--text-xl); }
+  .quoteMark { font-size: 80px; }
+}
