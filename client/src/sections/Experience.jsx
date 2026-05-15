@@ -28,7 +28,7 @@ const FALLBACK = [
   {
     id: 3,
     role: 'Software Design Specialist',
-    company: 'IEMOP (Electricity Market Operator of the Philippines)',
+    company: 'Energy Market Sector',
     period: '2018 – 2023',
     bullets: [
       'Designed and maintained software systems for Philippine electricity market infrastructure',
@@ -38,7 +38,7 @@ const FALLBACK = [
   {
     id: 4,
     role: 'Software Test Engineer',
-    company: 'PEMC',
+    company: 'Energy Market Sector',
     period: '2013 – 2018',
     bullets: [
       '5 years dedicated QA engineering in regulated energy-sector systems',
