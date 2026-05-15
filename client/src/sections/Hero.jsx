@@ -9,26 +9,30 @@ function GeometricVisual() {
         <div className={styles.gridFade} />
       </div>
 
-      <div className={styles.card1}>
-        <div className={styles.card1Label}>Automation trigger</div>
-        <div className={styles.card1Value}>15h+ saved</div>
-        <div className={styles.card1Sub}>per client · weekly average</div>
-        <div className={styles.card1Bar}>
-          <div className={styles.card1BarFill} />
+      <div className={styles.cards}>
+        <div className={styles.card1}>
+          <div className={styles.card1Label}>Automation trigger</div>
+          <div className={styles.card1Value}>15h+ saved</div>
+          <div className={styles.card1Sub}>per client · weekly average</div>
+          <div className={styles.card1Bar}>
+            <div className={styles.card1BarFill} />
+          </div>
         </div>
-      </div>
 
-      <div className={styles.card2}>
-        <div className={styles.card2Dot} />
-        <div>
-          <div className={styles.card2Text}>PayMongo → GHL</div>
-          <div className={styles.card2Sub}>Webhook fired · 2.4s</div>
+        <div className={styles.cardRow}>
+          <div className={styles.card2}>
+            <div className={styles.card2Dot} />
+            <div>
+              <div className={styles.card2Text}>PayMongo → GHL</div>
+              <div className={styles.card2Sub}>Webhook fired · 2.4s</div>
+            </div>
+          </div>
+
+          <div className={styles.card3}>
+            <div className={styles.card3Row}>GHL Certified Specialist</div>
+            <span className={styles.card3Tag}>✓ 100% Job Success</span>
+          </div>
         </div>
-      </div>
-
-      <div className={styles.card3}>
-        <div className={styles.card3Row}>GHL Certified Specialist</div>
-        <span className={styles.card3Tag}>✓ 100% Job Success</span>
       </div>
     </div>
   );

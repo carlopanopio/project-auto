@@ -157,7 +157,7 @@
   height: 480px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: var(--space-6);
 }
 
 .grid {
@@ -177,8 +177,17 @@
   background: radial-gradient(circle at center, transparent 30%, var(--color-bg) 80%);
 }
 
+/* Cards wrapper — sits above the grid pattern */
+.cards {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
 .card1, .card2, .card3 {
-  position: absolute;
   background: var(--color-surface);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-card);
@@ -187,9 +196,6 @@
 }
 
 .card1 {
-  top: 48px;
-  left: 20px;
-  right: 20px;
   padding: var(--space-5) var(--space-6);
 }
 
@@ -235,9 +241,14 @@
   to { width: 78%; }
 }
 
+/* card2 and card3 sit side-by-side in a 2-column row */
+.cardRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
 .card2 {
-  bottom: 80px;
-  left: 20px;
   padding: var(--space-4) var(--space-5);
   display: flex;
   align-items: center;
@@ -271,15 +282,10 @@
 }
 
 .card3 {
-  bottom: 20px;
-  right: 20px;
   padding: var(--space-4) var(--space-5);
 }
 
 .card3Row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
   font-size: var(--text-xs);
   color: var(--color-muted);
 }
