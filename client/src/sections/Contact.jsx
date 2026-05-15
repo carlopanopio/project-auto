@@ -1,48 +1,8 @@
-import { useEffect, useRef } from 'react';
 import styles from './Contact.module.css';
 
 const CALENDAR_URL = 'https://api.leadconnectorhq.com/widget/bookings/automationhubph-disc-call';
 
-function sendTheme(iframe, theme) {
-  iframe?.contentWindow?.postMessage({ type: 'ah-theme', theme }, '*');
-}
-
 export default function Contact() {
-  const iframeRef = useRef(null);
-
-  useEffect(() => {
-    const iframe = iframeRef.current;
-
-    // Send theme whenever the site's data-theme attribute changes
-    const observer = new MutationObserver(() => {
-      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-      sendTheme(iframe, theme);
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-    // Respond to the iframe requesting the current theme on its load
-    function handleRequest(e) {
-      if (e.data?.type === 'ah-theme-request') {
-        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-        sendTheme(iframe, theme);
-      }
-    }
-    window.addEventListener('message', handleRequest);
-
-    // Push theme once iframe has loaded
-    function onLoad() {
-      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-      sendTheme(iframe, theme);
-    }
-    iframe?.addEventListener('load', onLoad);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('message', handleRequest);
-      iframe?.removeEventListener('load', onLoad);
-    };
-  }, []);
-
   return (
     <section id="contact" className={`section ${styles.contact}`}>
       <div className="container">
@@ -84,7 +44,6 @@ export default function Contact() {
 
           <div className={`${styles.calendarWrapper} reveal reveal-delay-2`}>
             <iframe
-              ref={iframeRef}
               src={CALENDAR_URL}
               id="msgsndr-calendar"
               title="Book a Discovery Call"
