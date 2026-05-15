@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getProjects } from '../lib/api.js';
 import styles from './Portfolio.module.css';
 
@@ -12,10 +12,19 @@ const FALLBACK = [
 export default function Portfolio() {
   const [projects, setProjects] = useState(FALLBACK);
   const [filter, setFilter] = useState('All');
+  const mounted = useRef(false);
 
   useEffect(() => {
     getProjects().then((data) => { if (data.length) setProjects(data); }).catch(() => {});
   }, []);
+
+  // Re-reveal cards after filter changes — the global IntersectionObserver only
+  // runs once on mount, so new card nodes rendered after a filter click stay at
+  // opacity:0 unless we force them visible here.
+  useEffect(() => {
+    if (!mounted.current) { mounted.current = true; return; }
+    document.querySelectorAll('#portfolio .reveal').forEach((el) => el.classList.add('visible'));
+  }, [filter]);
 
   const allTags = ['All', ...new Set(projects.flatMap((p) => p.tags || []))];
   const filtered = filter === 'All' ? projects : projects.filter((p) => p.tags?.includes(filter));
