@@ -74,7 +74,7 @@ export default function Navbar() {
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </button>
           <button className={styles.cta} onClick={() => scrollTo('#contact')}>
-            Get in Touch
+            Book a Call
           </button>
           <button
             className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ''}`}
