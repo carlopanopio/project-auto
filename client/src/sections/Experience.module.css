@@ -1,0 +1,112 @@
+.experience {}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-16);
+  align-items: end;
+  margin-bottom: var(--space-16);
+}
+
+.heading {
+  font-size: var(--text-5xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.sub {
+  font-size: var(--text-base);
+  color: var(--color-muted);
+  line-height: 1.7;
+  padding-bottom: 4px;
+}
+
+/* ── Timeline list ──────────────────────────────── */
+.timeline {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background var(--duration-fast);
+}
+.entry:last-child { border-bottom: none; }
+.entry:hover { background: var(--color-surface); }
+
+.period {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-8) var(--space-5);
+  padding-top: var(--space-8);
+  border-right: 1px solid var(--color-border-subtle);
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.content {
+  padding: var(--space-8) var(--space-10);
+}
+
+.role {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text-strong);
+  margin-bottom: var(--space-1);
+}
+
+.company {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  margin-bottom: var(--space-4);
+}
+
+.bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.bullet {
+  display: flex;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  line-height: 1.65;
+}
+
+.bullet::before {
+  content: '–';
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+@media (max-width: 768px) {
+  .header { grid-template-columns: 1fr; gap: var(--space-6); }
+
+  .entry { grid-template-columns: 1fr; }
+
+  .period {
+    justify-content: flex-start;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding: var(--space-4) var(--space-6);
+  }
+
+  .content { padding: var(--space-6); }
+}

@@ -10,6 +10,7 @@ import Tools from './sections/Tools.jsx';
 import Services from './sections/Services.jsx';
 import Portfolio from './sections/Portfolio.jsx';
 import Process from './sections/Process.jsx';
+import Experience from './sections/Experience.jsx';
 import Testimonials from './sections/Testimonials.jsx';
 import Certifications from './sections/Certifications.jsx';
 import Contact from './sections/Contact.jsx';
@@ -27,6 +28,7 @@ function PublicSite() {
         <Services />
         <Portfolio />
         <Process />
+        <Experience />
         <Testimonials />
         <Certifications />
         <Contact />
