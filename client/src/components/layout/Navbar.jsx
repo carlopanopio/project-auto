@@ -6,7 +6,9 @@ const NAV_LINKS = [
   { label: 'Services', href: '#services' },
   { label: 'Work', href: '#portfolio' },
   { label: 'Process', href: '#process' },
+  { label: 'Experience', href: '#experience' },
   { label: 'Testimonials', href: '#testimonials' },
+  { label: 'Certifications', href: '#certifications' },
 ];
 
 function SunIcon() {
