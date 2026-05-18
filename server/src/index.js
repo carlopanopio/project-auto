@@ -21,7 +21,13 @@ const isProd = process.env.NODE_ENV === 'production';
 
 // Security headers
 app.use(helmet({
-  contentSecurityPolicy: isProd ? undefined : false,
+  contentSecurityPolicy: isProd ? {
+    directives: {
+      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      'frame-src': ["'self'", 'https://api.leadconnectorhq.com', 'https://*.leadconnectorhq.com'],
+      'frame-ancestors': ["'self'"],
+    },
+  } : false,
 }));
 
 // CORS
