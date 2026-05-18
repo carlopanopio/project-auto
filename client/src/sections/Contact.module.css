@@ -67,6 +67,11 @@
   display: block;
   border: none;
   border-radius: var(--radius-card);
+  transition: filter var(--duration-normal) var(--ease-in-out);
+}
+
+.calendarFrame.dark {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 @media (max-width: 900px) {

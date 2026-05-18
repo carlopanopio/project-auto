@@ -1,20 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './Contact.module.css';
 
-const GHL_BASE = 'https://api.leadconnectorhq.com/widget/bookings/automationhubph-disc-call';
-
-const THEME_PARAMS = {
-  dark: {
-    primaryColor: '4f7cff',
-    backgroundColor: '080b14',
-    textColor: 'e8eaf0',
-  },
-  light: {
-    primaryColor: '2f5ce6',
-    backgroundColor: 'ffffff',
-    textColor: '1a1d2e',
-  },
-};
+const CALENDAR_URL = 'https://api.leadconnectorhq.com/widget/bookings/automationhubph-disc-call';
 
 function useDocTheme() {
   const [theme, setTheme] = useState(
@@ -32,7 +19,6 @@ function useDocTheme() {
 
 export default function Contact() {
   const theme = useDocTheme();
-  const calendarUrl = `${GHL_BASE}?${new URLSearchParams(THEME_PARAMS[theme])}`;
 
   return (
     <section id="contact" className={`section ${styles.contact}`}>
@@ -75,12 +61,11 @@ export default function Contact() {
 
           <div className={`${styles.calendarWrapper} reveal reveal-delay-2`}>
             <iframe
-              key={theme}
-              src={calendarUrl}
+              src={CALENDAR_URL}
               id="msgsndr-calendar"
               title="Book a Discovery Call"
               scrolling="yes"
-              className={styles.calendarFrame}
+              className={`${styles.calendarFrame} ${theme === 'dark' ? styles.dark : ''}`}
             />
           </div>
         </div>
