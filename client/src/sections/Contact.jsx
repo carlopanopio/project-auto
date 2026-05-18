@@ -65,7 +65,7 @@ export default function Contact() {
               id="msgsndr-calendar"
               title="Book a Discovery Call"
               scrolling="yes"
-              className={`${styles.calendarFrame} ${theme === 'dark' ? styles.dark : ''}`}
+              className={`${styles.calendarFrame} ${theme === 'light' ? styles.light : ''}`}
             />
           </div>
         </div>

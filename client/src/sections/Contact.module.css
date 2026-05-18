@@ -70,7 +70,7 @@
   transition: filter var(--duration-normal) var(--ease-in-out);
 }
 
-.calendarFrame.dark {
+.calendarFrame.light {
   filter: invert(1) hue-rotate(180deg);
 }
 
