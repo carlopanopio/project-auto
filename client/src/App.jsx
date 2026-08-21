@@ -9,6 +9,7 @@ import Hero from './sections/Hero.jsx';
 import Tools from './sections/Tools.jsx';
 import Services from './sections/Services.jsx';
 import Portfolio from './sections/Portfolio.jsx';
+import Demos from './sections/Demos.jsx';
 import Process from './sections/Process.jsx';
 import Experience from './sections/Experience.jsx';
 import Testimonials from './sections/Testimonials.jsx';
@@ -27,6 +28,7 @@ function PublicSite() {
         <Tools />
         <Services />
         <Portfolio />
+        <Demos />
         <Process />
         <Experience />
         <Testimonials />

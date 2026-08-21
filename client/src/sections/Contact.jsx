@@ -1,21 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useDocTheme } from '../hooks/useDocTheme.js';
 import styles from './Contact.module.css';
 
 const CALENDAR_URL = 'https://api.leadconnectorhq.com/widget/bookings/automationhubph-disc-call';
-
-function useDocTheme() {
-  const [theme, setTheme] = useState(
-    () => document.documentElement.getAttribute('data-theme') || 'dark'
-  );
-  useEffect(() => {
-    const obs = new MutationObserver(() => {
-      setTheme(document.documentElement.getAttribute('data-theme') || 'dark');
-    });
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => obs.disconnect();
-  }, []);
-  return theme;
-}
 
 export default function Contact() {
   const theme = useDocTheme();

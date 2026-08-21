@@ -24,8 +24,15 @@ app.use(helmet({
   contentSecurityPolicy: isProd ? {
     directives: {
       ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      'frame-src': ["'self'", 'https://api.leadconnectorhq.com', 'https://*.leadconnectorhq.com'],
+      'frame-src': [
+        "'self'",
+        'https://api.leadconnectorhq.com',
+        'https://*.leadconnectorhq.com',
+        'https://airtable.com',
+        'https://*.airtable.com',
+      ],
       'frame-ancestors': ["'self'"],
+      'connect-src': ["'self'", 'https://n8n-production-e454.up.railway.app'],
     },
   } : false,
 }));
