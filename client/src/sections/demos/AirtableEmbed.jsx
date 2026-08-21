@@ -1,7 +1,9 @@
 import { useDocTheme } from '../../hooks/useDocTheme.js';
 import styles from './AirtableEmbed.module.css';
 
-const AIRTABLE_EMBED_URL = import.meta.env.VITE_AIRTABLE_EMBED_URL || '';
+const AIRTABLE_EMBED_URL =
+  import.meta.env.VITE_AIRTABLE_EMBED_URL ||
+  'https://airtable.com/embed/app5n2xqzCMgVm8tg/shrmdtr897kOJ31Pq?viewControls=on';
 
 export default function AirtableEmbed() {
   const theme = useDocTheme();
@@ -18,6 +20,7 @@ export default function AirtableEmbed() {
     <iframe
       src={AIRTABLE_EMBED_URL}
       title="Live CRM Sync — Company field"
+      frameBorder="0"
       className={`${styles.airtableFrame} ${theme === 'light' ? styles.light : ''}`}
     />
   );
