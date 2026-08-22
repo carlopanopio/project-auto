@@ -3,6 +3,7 @@ import { repurposeContent, N8nError } from '../../lib/n8n.js';
 import styles from './ContentRepurposer.module.css';
 
 const CHAR_LIMIT = 2000;
+const TONES = ['Professional', 'Casual', 'Bold'];
 
 function isValidUrl(value) {
   try {
@@ -11,6 +12,11 @@ function isValidUrl(value) {
   } catch {
     return false;
   }
+}
+
+function wordCount(text) {
+  const trimmed = text.trim();
+  return trimmed ? trimmed.split(/\s+/).length : 0;
 }
 
 const RESULT_CARDS = [
@@ -39,6 +45,7 @@ function CopyButton({ text }) {
 
 export default function ContentRepurposer() {
   const [mode, setMode] = useState('text');
+  const [tone, setTone] = useState('Professional');
   const [textValue, setTextValue] = useState('');
   const [urlValue, setUrlValue] = useState('');
   const [urlError, setUrlError] = useState('');
@@ -71,6 +78,7 @@ export default function ContentRepurposer() {
       const data = await repurposeContent({
         content: mode === 'text' ? textValue : '',
         sourceUrl: mode === 'url' ? urlValue.trim() : '',
+        tone,
       });
       setResult(data);
       setStatus('success');
@@ -103,6 +111,23 @@ export default function ContentRepurposer() {
         >
           Paste a URL
         </button>
+      </div>
+
+      <div className={styles.toneRow}>
+        <span className={styles.toneRowLabel}>Tone</span>
+        <div className={styles.toneToggle}>
+          {TONES.map((t) => (
+            <button
+              key={t}
+              type="button"
+              className={`${styles.modeBtn} ${tone === t ? styles.modeActive : ''}`}
+              onClick={() => setTone(t)}
+              disabled={loading}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
       </div>
 
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -156,6 +181,9 @@ export default function ContentRepurposer() {
                 <CopyButton text={result[key]} />
               </div>
               <p className={styles.resultText}>{result[key]}</p>
+              <span className={styles.countLabel}>
+                {wordCount(result[key])} words · {(result[key] || '').length} characters
+              </span>
             </div>
           ))}
           {result.tone && <span className={styles.toneLabel}>Tone: {result.tone}</span>}
