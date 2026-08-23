@@ -3,6 +3,7 @@ import ContentRepurposer from './demos/ContentRepurposer.jsx';
 import ChatWidget from './demos/ChatWidget.jsx';
 import CrmSyncDemo from './demos/CrmSyncDemo.jsx';
 import EmailTriageDemo from './demos/EmailTriageDemo.jsx';
+import LeadEnrichmentDemo from './demos/LeadEnrichmentDemo.jsx';
 import styles from './Demos.module.css';
 
 const TABS = [
@@ -10,6 +11,7 @@ const TABS = [
   { id: 'chat', label: 'Ask Anything' },
   { id: 'crm', label: 'CRM Sync' },
   { id: 'triage', label: 'Email Triage' },
+  { id: 'enrich', label: 'Lead Enrichment' },
 ];
 
 export default function Demos() {
@@ -57,6 +59,7 @@ export default function Demos() {
           {activeTab === 'chat' && <ChatWidget />}
           {activeTab === 'crm' && <CrmSyncDemo />}
           {activeTab === 'triage' && <EmailTriageDemo />}
+          {activeTab === 'enrich' && <LeadEnrichmentDemo />}
         </div>
       </div>
     </section>
