@@ -45,3 +45,5 @@ export const repurposeContent = (body) => postToN8n('/webhook/content-repurposer
 export const askChat = (question) => postToN8n('/webhook/rag-chat-demo', { question });
 
 export const submitCrmLead = (body) => postToN8n('/webhook/crm-sync-lead', body);
+
+export const enrichDomain = (domain) => postToN8n('/webhook/lead-enrichment', { domain });
