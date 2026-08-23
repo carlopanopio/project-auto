@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { fetchEmailTriageFeed } from '../../lib/liveFeed.js';
 import styles from './EmailTriageDemo.module.css';
 
-const DEMO_MAILBOX = 'automationhubph@gmail.com';
+const DEMO_MAILBOX = 'automationhubph.demo@gmail.com';
 const POLL_INTERVAL_MS = 5000;
 
 const CATEGORY_CLASS = {
