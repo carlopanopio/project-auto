@@ -8,7 +8,7 @@ export default function TestimonialsEditor() {
   const [rows, setRows] = useState([]);
   const [modal, setModal] = useState(null);
 
-  async function load() { setRows(await adminGetTestimonials()); }
+  function load() { return adminGetTestimonials().then(setRows); }
   useEffect(() => { load(); }, []);
 
   async function save() {

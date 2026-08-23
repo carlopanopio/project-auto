@@ -13,7 +13,7 @@ export default function ExperienceEditor() {
   const [rows, setRows] = useState([]);
   const [modal, setModal] = useState(null);
 
-  async function load() { setRows(await adminGetExperience()); }
+  function load() { return adminGetExperience().then(setRows); }
   useEffect(() => { load(); }, []);
 
   async function save() {

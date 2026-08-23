@@ -9,7 +9,7 @@ export default function ServicesEditor() {
   const [rows, setRows] = useState([]);
   const [modal, setModal] = useState(null);
 
-  async function load() { setRows(await adminGetServices()); }
+  function load() { return adminGetServices().then(setRows); }
   useEffect(() => { load(); }, []);
 
   async function save() {
