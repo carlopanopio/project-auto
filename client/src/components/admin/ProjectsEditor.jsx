@@ -15,8 +15,8 @@ export default function ProjectsEditor() {
   const [rows, setRows] = useState([]);
   const [modal, setModal] = useState(null); // null | { mode: 'add'|'edit', data }
 
-  async function load() {
-    setRows(await adminGetProjects());
+  function load() {
+    return adminGetProjects().then(setRows);
   }
 
   useEffect(() => { load(); }, []);

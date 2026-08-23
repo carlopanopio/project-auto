@@ -13,8 +13,8 @@ export default function CertificationsEditor() {
   const [rows, setRows] = useState([]);
   const [modal, setModal] = useState(null);
 
-  async function load() {
-    setRows(await adminGetCertifications());
+  function load() {
+    return adminGetCertifications().then(setRows);
   }
   useEffect(() => { load(); }, []);
 
