@@ -2,12 +2,14 @@ import { useState, useRef, useEffect } from 'react';
 import ContentRepurposer from './demos/ContentRepurposer.jsx';
 import ChatWidget from './demos/ChatWidget.jsx';
 import CrmSyncDemo from './demos/CrmSyncDemo.jsx';
+import EmailTriageDemo from './demos/EmailTriageDemo.jsx';
 import styles from './Demos.module.css';
 
 const TABS = [
   { id: 'repurpose', label: 'Content Repurposer' },
   { id: 'chat', label: 'Ask Anything' },
   { id: 'crm', label: 'CRM Sync' },
+  { id: 'triage', label: 'Email Triage' },
 ];
 
 export default function Demos() {
@@ -54,6 +56,7 @@ export default function Demos() {
           {activeTab === 'repurpose' && <ContentRepurposer />}
           {activeTab === 'chat' && <ChatWidget />}
           {activeTab === 'crm' && <CrmSyncDemo />}
+          {activeTab === 'triage' && <EmailTriageDemo />}
         </div>
       </div>
     </section>
