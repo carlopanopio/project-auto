@@ -88,6 +88,11 @@ export default function ContentRepurposer() {
 
   return (
     <div className={styles.widget}>
+      <p className={styles.intro}>
+        Paste text or a URL — AI rewrites it into a tweet thread, LinkedIn post, and email
+        blurb. Limited to 5 tries per 72 hours.
+      </p>
+
       <div className={styles.modeToggle}>
         <button
           type="button"

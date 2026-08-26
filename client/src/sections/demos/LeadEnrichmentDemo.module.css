@@ -84,6 +84,15 @@
   padding: var(--space-3) var(--space-4);
 }
 
+.emptyNotice {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+}
+
 .resultCard {
   background: var(--color-surface);
   border: 1px solid var(--color-border-subtle);

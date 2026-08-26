@@ -4,6 +4,12 @@
   gap: var(--space-6);
 }
 
+.intro {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
 /* Mode toggle */
 .modeToggle {
   display: flex;

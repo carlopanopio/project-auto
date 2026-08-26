@@ -72,6 +72,10 @@ export default function EmailTriageDemo() {
           The feed only ever shows category, priority, and a summary — sender identity is
           never stored or displayed.
         </p>
+        <p className={styles.categoryNote}>
+          Classified by AI into: Sales Lead, Support, Spam, or Other — with a priority
+          (High/Medium/Low) and a one-line summary.
+        </p>
       </div>
 
       <div className={styles.feed} aria-live="polite">

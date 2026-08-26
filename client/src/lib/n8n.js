@@ -28,7 +28,7 @@ async function postToN8n(path, body) {
 
   if (res.status === 429) {
     // The workflow already writes a ready-to-render friendly message — don't reparse it.
-    throw new N8nError('rate_limited', data.message || 'Rate limit reached — please try again shortly.');
+    throw new N8nError('rate_limited', data.message || "You've hit the demo limit — please try again later.");
   }
   if (!res.ok) {
     throw new N8nError('server', data.message || data.error || `Request failed (${res.status}).`);

@@ -4,6 +4,12 @@
   gap: var(--space-4);
 }
 
+.intro {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
 .thread {
   display: flex;
   flex-direction: column;
