@@ -32,7 +32,11 @@ app.use(helmet({
         'https://*.airtable.com',
       ],
       'frame-ancestors': ["'self'"],
-      'connect-src': ["'self'", 'https://n8n-production-e454.up.railway.app'],
+      'connect-src': [
+        "'self'",
+        'https://n8n-production-e454.up.railway.app',
+        'https://swbstiudmouiyvwrrlyr.supabase.co',
+      ],
     },
   } : false,
 }));
