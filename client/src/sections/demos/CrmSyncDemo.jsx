@@ -51,6 +51,11 @@ export default function CrmSyncDemo() {
   return (
     <div className={styles.inner}>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        <p className={styles.intro}>
+          Submit a fake lead — it's synced live to our CRM (Airtable) below, with duplicate
+          emails automatically skipped.
+        </p>
+
         <div className={styles.field}>
           <label className={styles.label} htmlFor="lead-name">Name</label>
           <input

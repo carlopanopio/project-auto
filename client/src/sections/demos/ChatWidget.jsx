@@ -39,6 +39,11 @@ export default function ChatWidget() {
 
   return (
     <div className={styles.widget}>
+      <p className={styles.intro}>
+        Ask a question — answers are grounded only in our ingested docs, with sources cited
+        below.
+      </p>
+
       <div className={styles.thread} aria-live="polite">
         {messages.length === 0 && (
           <p className={styles.emptyState}>Ask anything about n8n's official docs — try "What is a webhook node?"</p>

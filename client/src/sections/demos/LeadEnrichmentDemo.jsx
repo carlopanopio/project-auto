@@ -49,8 +49,8 @@ export default function LeadEnrichmentDemo() {
   return (
     <div className={styles.widget}>
       <p className={styles.intro}>
-        Enter a company domain — a live n8n workflow looks it up and hands the raw fields to
-        Gemini for a quick plain-English summary.
+        Enter a company domain — AI pulls firmographic data and writes a short company
+        summary.
       </p>
 
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -94,6 +94,9 @@ export default function LeadEnrichmentDemo() {
           <span className={styles.resultLabel}>Company summary</span>
           <p className={styles.resultText}>{summary}</p>
         </div>
+      )}
+      {status === 'success' && !summary && (
+        <p className={styles.emptyNotice}>No public data found for this domain.</p>
       )}
     </div>
   );

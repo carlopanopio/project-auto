@@ -38,6 +38,12 @@
   color: var(--color-muted);
 }
 
+.categoryNote {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
 .feed {
   display: flex;
   flex-direction: column;
