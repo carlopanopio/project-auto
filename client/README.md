@@ -22,10 +22,15 @@ A static, framework-free prototype of a parallax redesign lives in
 `vite dev` and the production build.
 
 - `index.html` — page markup with the real site content
-- `parallax.css` — dark-first tokens (light theme via `prefers-color-scheme` or `data-theme`)
+- `parallax.css` — the site's own palette (navy / blue / gold, warm-paper light
+  mode via `prefers-color-scheme` or `data-theme`) plus the responsive layer:
+  mobile menu, fold-cover widths (≤360px), landscape phones, tablets, large
+  displays, and viewport-segment rules for book-fold and flip devices
 - `parallax.js` — scroll-driven layers (`data-speed`), progress-driven sections
-  (`data-progress` → `--p`), hero pointer tilt, theme toggle; all motion is
-  disabled under `prefers-reduced-motion`
+  (`data-progress` → `--p`), hero pointer tilt, mobile menu, theme toggle; all
+  motion is disabled under `prefers-reduced-motion`
+
+Preview: https://claude.ai/artifact/2NKGvrKg4hnfn9gYuo4AMJ
 
 Scripts and styles are external files on purpose: the production CSP only
 allows `script-src 'self'`.
