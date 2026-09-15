@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import ContentRepurposer from './demos/ContentRepurposer.jsx';
 import ChatWidget from './demos/ChatWidget.jsx';
 import CrmSyncDemo from './demos/CrmSyncDemo.jsx';
@@ -16,45 +16,37 @@ const TABS = [
 
 export default function Demos() {
   const [activeTab, setActiveTab] = useState('repurpose');
-  const panelRef = useRef(null);
-  const mounted = useRef(false);
-
-  // The global scroll-reveal IntersectionObserver only fires once per element on
-  // initial scroll-into-view, so a panel swapped in after mount (via tab click)
-  // would otherwise stay stuck at opacity:0 — force it visible, same workaround
-  // Portfolio.jsx uses for its filter clicks.
-  useEffect(() => {
-    if (!mounted.current) { mounted.current = true; return; }
-    panelRef.current?.classList.add('visible');
-  }, [activeTab]);
 
   return (
-    <section id="demos" className={`section ${styles.demos}`}>
+    <section id="demos" className="section">
       <div className="container">
-        <div className={`${styles.header} reveal`}>
-          <span className="overline">Try It Yourself</span>
-          <h2 className={styles.heading}>
-            See the automations<br />
-            <span className="gradient-text">actually run</span>
-          </h2>
-          <p className={styles.sub}>
-            These demos are wired to real, live automations — same n8n workflows I build for clients.
-          </p>
-
-          <div className={styles.tabs}>
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                className={`${styles.tabBtn} ${activeTab === tab.id ? styles.tabActive : ''}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
+        <div className={styles.header}>
+          <div>
+            <p className="eyebrow">Try it yourself</p>
+            <h2 className="h2">See the automations <span className="gradient-text">actually run</span></h2>
           </div>
+          <p className={`lede ${styles.sub}`}>
+            These demos are wired to real, live automations — the same n8n workflows we build for clients.
+            Pick one and watch it execute.
+          </p>
         </div>
 
-        <div ref={panelRef} className={`${styles.panel} reveal reveal-delay-1`}>
+        <div className={styles.tabs} role="tablist" aria-label="Live demos">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              className={`${styles.tabBtn} ${activeTab === tab.id ? styles.tabActive : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.panel}>
           {activeTab === 'repurpose' && <ContentRepurposer />}
           {activeTab === 'chat' && <ChatWidget />}
           {activeTab === 'crm' && <CrmSyncDemo />}

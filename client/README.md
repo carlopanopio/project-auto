@@ -14,3 +14,17 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Public site design notes
+
+The public site uses a scroll-driven parallax design:
+
+- `src/styles/tokens.css` — palette (navy / blue / gold, warm-paper light mode),
+  type scale, spacing, and device-level token overrides
+- `src/styles/global.css` — shared classes: `.container`, `.section`, `.eyebrow`,
+  `.h2`, `.lede`, `.btn`, `.tags`, `.layer`
+- `src/styles/devices.css` — foldable and dual-screen rules (`[data-split]`,
+  `[data-sticky]`), loaded last so they win on those devices
+- `src/hooks/useParallax.js` — drives `[data-speed]` layers and `[data-progress]`
+  sections; rescans the DOM as API data arrives; disabled under
+  `prefers-reduced-motion`
