@@ -1,0 +1,22 @@
+/* Foldable and dual-screen situations. Loaded after the section modules so
+   these win on the matching devices.
+
+   [data-split]  — a two-column grid that should straddle the hinge
+   [data-sticky] — a heading that pins on desktop; unpinned when segments stack */
+
+/* Book-fold devices opened flat (two side-by-side segments): keep a hinge gutter
+   between paired columns so nothing sits under the fold */
+@media (horizontal-viewport-segments: 2) {
+  main .container { max-width: none; }
+  main [data-split] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: calc(env(viewport-segment-left 1 0) - env(viewport-segment-right 0 0) + 2rem) !important;
+  }
+  main [data-sticky] { position: sticky; }
+}
+
+/* Flip phones half-open (tabletop posture) and stacked segments: avoid pinning
+   content on the fold */
+@media (vertical-viewport-segments: 2) {
+  main [data-sticky] { position: static; }
+}

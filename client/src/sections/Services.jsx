@@ -26,41 +26,32 @@ export default function Services() {
   }, []);
 
   return (
-    <section id="services" className={`section ${styles.services}`}>
-      <div className="container">
-        <div className={`${styles.header} reveal`}>
-          <h2 className={styles.heading}>
-            What we<br />
-            <span className="gradient-text">actually do</span>
-          </h2>
-          <div className={styles.headerRight}>
-            <p className={styles.sub}>
-              Most GHL consultants are marketers who learned the platform.
-              We're software engineers who chose to specialise in it — which means
-              we can build things others can't touch.
-            </p>
-          </div>
+    <section id="services" className="section">
+      <div className={`container ${styles.grid}`} data-split>
+        <div className={styles.head} data-sticky>
+          <p className="eyebrow">Services</p>
+          <h2 className="h2">What we <span className="gradient-text">actually</span> do</h2>
+          <p className={`lede ${styles.sub}`}>
+            Most GHL consultants are marketers who learned the platform.
+            We're software engineers who chose to specialise in it — which means
+            we can build things others can't touch.
+          </p>
         </div>
 
         <div className={styles.list}>
-          {services.map((s, i) => (
-            <div key={s.id} className={`${styles.item} reveal reveal-delay-${Math.min(i + 1, 4)}`}>
-              <span className={styles.num}>0{i + 1}</span>
-              <div className={styles.body}>
-                <h3 className={styles.title}>{s.title}</h3>
-                <p className={styles.desc}>{s.description}</p>
-                <div className={styles.tags}>
-                  {(SERVICE_TAGS[s.title] || []).map((t) => (
-                    <span key={t} className={styles.tag}>{t}</span>
-                  ))}
+          {services.map((s) => (
+            <article key={s.id} className={styles.item}>
+              <h3 className={styles.title}>
+                {s.title}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              </h3>
+              <p className={styles.desc}>{s.description}</p>
+              {(SERVICE_TAGS[s.title] || []).length > 0 && (
+                <div className="tags">
+                  {SERVICE_TAGS[s.title].map((t) => <span key={t} className="tag">{t}</span>)}
                 </div>
-              </div>
-              <div className={styles.arrow}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
-                </svg>
-              </div>
-            </div>
+              )}
+            </article>
           ))}
         </div>
       </div>

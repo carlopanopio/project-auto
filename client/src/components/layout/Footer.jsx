@@ -1,3 +1,4 @@
+import { LogoMark } from './Navbar.jsx';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -5,13 +6,11 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={`container ${styles.inner}`}>
-        <div className={styles.logo}>
-          <span className={styles.logoDot} />
+        <span className={styles.logo}>
+          <LogoMark />
           AutomationHub
-        </div>
-        <p className={styles.copy}>
-          © {year} AutomationHub.ph · Built for the future of work.
-        </p>
+        </span>
+        <p className={styles.copy}>© {year} AutomationHub.ph · Built for the future of work.</p>
         <p className={styles.tagline}>automationhub.ph</p>
       </div>
     </footer>

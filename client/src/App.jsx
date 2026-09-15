@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { isAuthenticated } from './lib/auth.js';
-import { useScrollReveal } from './hooks/useScrollReveal.js';
+import { useParallax } from './hooks/useParallax.js';
 
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
@@ -19,11 +19,11 @@ import AdminLogin from './components/admin/AdminLogin.jsx';
 import AdminLayout from './components/admin/AdminLayout.jsx';
 
 function PublicSite() {
-  useScrollReveal();
+  useParallax();
   return (
     <>
       <Navbar />
-      <main>
+      <main id="top">
         <Hero />
         <Tools />
         <Services />

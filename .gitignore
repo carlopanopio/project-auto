@@ -9,6 +9,3 @@ Thumbs.db
 index.html
 script.js
 styles.css
-
-# Prototype pages under client/public are real source, not build output
-!client/public/prototype/index.html

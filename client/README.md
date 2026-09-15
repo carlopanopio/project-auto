@@ -15,22 +15,16 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
-## Parallax redesign prototype
+## Public site design notes
 
-A static, framework-free prototype of a parallax redesign lives in
-`public/prototype/` and is served as-is at `/prototype/index.html` in both
-`vite dev` and the production build.
+The public site uses a scroll-driven parallax design:
 
-- `index.html` — page markup with the real site content
-- `parallax.css` — the site's own palette (navy / blue / gold, warm-paper light
-  mode via `prefers-color-scheme` or `data-theme`) plus the responsive layer:
-  mobile menu, fold-cover widths (≤360px), landscape phones, tablets, large
-  displays, and viewport-segment rules for book-fold and flip devices
-- `parallax.js` — scroll-driven layers (`data-speed`), progress-driven sections
-  (`data-progress` → `--p`), hero pointer tilt, mobile menu, theme toggle; all
-  motion is disabled under `prefers-reduced-motion`
-
-Preview: https://claude.ai/artifact/2NKGvrKg4hnfn9gYuo4AMJ
-
-Scripts and styles are external files on purpose: the production CSP only
-allows `script-src 'self'`.
+- `src/styles/tokens.css` — palette (navy / blue / gold, warm-paper light mode),
+  type scale, spacing, and device-level token overrides
+- `src/styles/global.css` — shared classes: `.container`, `.section`, `.eyebrow`,
+  `.h2`, `.lede`, `.btn`, `.tags`, `.layer`
+- `src/styles/devices.css` — foldable and dual-screen rules (`[data-split]`,
+  `[data-sticky]`), loaded last so they win on those devices
+- `src/hooks/useParallax.js` — drives `[data-speed]` layers and `[data-progress]`
+  sections; rescans the DOM as API data arrives; disabled under
+  `prefers-reduced-motion`
