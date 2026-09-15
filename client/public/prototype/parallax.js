@@ -21,6 +21,25 @@
     });
   }
 
+  /* Enable the theme transition only after first paint (no flash on load) */
+  requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('theme-ready')));
+
+  /* ── Mobile menu ── */
+  const menuBtn = document.getElementById('menu-toggle');
+  const navEl = document.querySelector('.nav');
+  function setMenu(open) {
+    if (!menuBtn || !navEl) return;
+    navEl.classList.toggle('is-open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  if (menuBtn) {
+    menuBtn.addEventListener('click', () => setMenu(!navEl.classList.contains('is-open')));
+    document.querySelectorAll('.nav__links a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+    window.matchMedia('(min-width: 961px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+  }
+
   /* ── Nav border once the page has moved ── */
   const nav = document.querySelector('.nav');
   const setNav = () => nav && nav.classList.toggle('is-scrolled', window.scrollY > 12);
