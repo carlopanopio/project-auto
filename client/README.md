@@ -14,3 +14,18 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Parallax redesign prototype
+
+A static, framework-free prototype of a parallax redesign lives in
+`public/prototype/` and is served as-is at `/prototype/index.html` in both
+`vite dev` and the production build.
+
+- `index.html` — page markup with the real site content
+- `parallax.css` — dark-first tokens (light theme via `prefers-color-scheme` or `data-theme`)
+- `parallax.js` — scroll-driven layers (`data-speed`), progress-driven sections
+  (`data-progress` → `--p`), hero pointer tilt, theme toggle; all motion is
+  disabled under `prefers-reduced-motion`
+
+Scripts and styles are external files on purpose: the production CSP only
+allows `script-src 'self'`.
