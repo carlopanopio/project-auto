@@ -9,15 +9,28 @@ browser  ──POST /webhook/interview-chat──▶  n8n
                                             ├─ hash IP, check rate limit (Postgres)
                                             ├─ embed question  (gemini-embedding-001, 768d)
                                             ├─ match_interview_chunks (pgvector, top 6)
-                                            ├─ generate answer (gemini-3.6-flash, grounded)
+                                            ├─ build grounding prompt (Code node)
+                                            ├─ generate answer (gemini-3.6-flash)
                                             └─ respond { answer, sources[] }
 ```
+
+Both workflows already exist in the n8n instance — they were created from the `.ts`
+sources in this directory via the n8n MCP SDK, not imported by hand:
+
+| Workflow | ID | Webhook path |
+|---|---|---|
+| Interview Bot - Chat Query Workflow | `us5aJyCZoPWbvsYR` | `/webhook/interview-chat` |
+| Interview Bot - KB Ingestion | `Uy37D85QEfkKCjub` | `/webhook/interview-kb-ingest` |
+
+Both are **inactive** until the steps below are done. n8n is the source of truth once
+you start editing in the UI; the `.ts` files are the build sources and will go stale if
+you change a node and don't update them.
 
 The knowledge base is `content/interview-kb.md` in this repo. Git holds the reviewable
 copy; pgvector holds what the bot actually reads. **They drift the moment you edit the
 file** — re-run the ingest after every change.
 
-## Setup (once)
+## Before these will run
 
 1. **Database.** Run `n8n/interview-rag-schema.sql` against the same Postgres/Supabase
    instance the other demos use (n8n credential `Demo - Postgres account`). It creates
@@ -25,37 +38,40 @@ file** — re-run the ingest after every change.
    behind the n8n-docs demo — re-ingesting the resume must never touch the docs corpus.
 
    It assumes the `rate_limits` table and `check_rate_limit()` function already exist,
-   since both workflows reuse them with the demo key `interview-chat`.
+   since the query workflow reuses them with the demo key `interview-chat`.
 
-2. **Import both workflows** into n8n:
-   - `interview-rag-ingest.workflow.json` — KB ingestion
-   - `interview-rag-query.workflow.json` — chat query
+2. **Fix the ingest credential.** ⚠️ n8n auto-assigned `Demo - Supabase REST (rate limit)`
+   to the KB Ingest Webhook's header auth — an unrelated credential it picked because it
+   was the only `httpHeaderAuth` on the instance. Create a **new** Header Auth credential
+   instead:
 
-   Both reference the existing credential IDs (`Demo - Postgres account`,
-   `Demo - Gemini API`), so they should bind on import. Confirm on each node anyway.
+   - Name: `Interview KB Ingest Token`
+   - Header name: `x-ingest-token`
+   - Header value: any long random string
 
-3. **Set `INTERVIEW_INGEST_TOKEN`** as an environment variable on the n8n instance, to
-   any long random string. The ingest webhook is public; this header check is the only
-   thing standing between it and anyone who guesses the URL. Use the same value locally
-   when running the ingest.
+   Then select it on the KB Ingest Webhook node. Until you do, the ingest endpoint is
+   gated by the Supabase key and `npm run kb:ingest` will get a 403.
 
-4. **Activate both workflows.**
+3. **Activate both workflows.**
 
 ## Ingesting the KB
 
 ```bash
-INTERVIEW_INGEST_TOKEN=... npm run kb:ingest
+INTERVIEW_INGEST_TOKEN=<the header value from step 2> npm run kb:ingest
 ```
 
 Truncates `interview_chunks` and re-inserts from scratch, so it is safe to re-run and
-never leaves stale chunks behind.
+never leaves stale chunks behind. The truncate runs *before* chunking, not after — a
+`DELETE` with `executeOnce` in the middle of the chain would collapse the per-chunk item
+stream down to one item and only the first chunk would ever get embedded.
 
 Chunking splits on `##` headings rather than a fixed character window — a resume section
 is already a coherent unit, and a blind window would cut a role away from its own bullets.
-Lines marked `TODO` are dropped: they are questions for Carlo, not facts about him, and
-embedding them would let the bot retrieve a question as though it were an answer. Sections
-that are *only* TODOs are skipped entirely, so an unanswered section is simply absent from
-the index rather than present and empty.
+`TODO` prompts are dropped (they are questions for you, not facts about you; embedding one
+would let the bot retrieve a question as though it were an answer) while any answer typed
+into the `>` quote beneath them is kept. The file preamble and the out-of-scope rules are
+skipped, and a section that is still entirely TODOs is left out of the index rather than
+indexed empty.
 
 ## Known trade-offs
 

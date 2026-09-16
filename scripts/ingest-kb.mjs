@@ -7,6 +7,8 @@
 //   INTERVIEW_INGEST_TOKEN=... npm run kb:ingest
 //
 // Chunking and embedding happen inside the n8n workflow — this just hands over the file.
+// The token goes in the x-ingest-token header, which must match the Header Auth
+// credential on the KB Ingest Webhook node (see n8n/README.md step 2).
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -36,6 +38,11 @@ const res = await fetch(`${N8N_BASE}/webhook/interview-kb-ingest`, {
 const data = await res.json().catch(() => ({}));
 
 if (!res.ok || data.ok === false) {
+  if (res.status === 403) {
+    console.error('Ingest rejected (403). The x-ingest-token header does not match the');
+    console.error('Header Auth credential on the KB Ingest Webhook node — see n8n/README.md step 2.');
+    process.exit(1);
+  }
   console.error(`Ingest failed (${res.status}):`, data.error || data);
   process.exit(1);
 }
