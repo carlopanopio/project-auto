@@ -12,6 +12,7 @@ import Portfolio from './sections/Portfolio.jsx';
 import Demos from './sections/Demos.jsx';
 import Process from './sections/Process.jsx';
 import Experience from './sections/Experience.jsx';
+import InterviewBot from './sections/InterviewBot.jsx';
 import Testimonials from './sections/Testimonials.jsx';
 import Certifications from './sections/Certifications.jsx';
 import Contact from './sections/Contact.jsx';
@@ -31,6 +32,7 @@ function PublicSite() {
         <Demos />
         <Process />
         <Experience />
+        <InterviewBot />
         <Testimonials />
         <Certifications />
         <Contact />

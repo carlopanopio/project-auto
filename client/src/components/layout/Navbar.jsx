@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: 'Live demos', href: '#demos' },
   { label: 'Process', href: '#process' },
   { label: 'Experience', href: '#experience' },
+  { label: 'Ask me anything', href: '#interview' },
   { label: 'Credentials', href: '#certifications' },
 ];
 
