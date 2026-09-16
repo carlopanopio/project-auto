@@ -67,6 +67,23 @@
 .bubbleError { border-color: #c2513f; }
 .bubbleText { font-size: var(--text-sm); line-height: 1.55; white-space: pre-wrap; text-wrap: pretty; }
 
+.sources { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.6rem; }
+.sourcesLabel {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.sourcePill {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-muted);
+}
+
 .inputRow { display: flex; gap: var(--space-2); }
 .input {
   flex: 1;

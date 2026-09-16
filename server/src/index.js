@@ -13,7 +13,6 @@ import projectsRoutes from './routes/projects.js';
 import experienceRoutes from './routes/experience.js';
 import testimonialsRoutes from './routes/testimonials.js';
 import certificationsRoutes from './routes/certifications.js';
-import interviewRoutes from './routes/interview.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -59,7 +58,6 @@ app.use('/api/projects', projectsRoutes);
 app.use('/api/experience', experienceRoutes);
 app.use('/api/testimonials', testimonialsRoutes);
 app.use('/api/certifications', certificationsRoutes);
-app.use('/api/interview', interviewRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 

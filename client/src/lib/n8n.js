@@ -44,6 +44,12 @@ export const repurposeContent = (body) => postToN8n('/webhook/content-repurposer
 // like any other reply.
 export const askChat = (question) => postToN8n('/webhook/rag-chat-demo', { question });
 
+// The interview bot's RAG workflow. Like the demo chat above it is always-200 — a
+// visitor over the limit gets a friendly message in `answer`, not a 429. Unlike the
+// demo chat it carries recent turns, because interview follow-ups need the thread.
+export const askInterviewBot = (question, history) =>
+  postToN8n('/webhook/interview-chat', { question, history });
+
 export const submitCrmLead = (body) => postToN8n('/webhook/crm-sync-lead', body);
 
 export const enrichDomain = (domain) => postToN8n('/webhook/lead-enrichment', { domain });

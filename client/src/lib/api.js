@@ -23,11 +23,6 @@ export const getExperience = () => request('/experience');
 export const getCertifications = () => request('/certifications');
 export const submitContact = (body) => request('/contact', { method: 'POST', body: JSON.stringify(body) });
 
-// Interview bot — grounded in content/interview-kb.md, server-side. Unlike the n8n
-// demo chat, this one carries the thread so follow-up questions work.
-export const askInterview = (question, history) =>
-  request('/interview/ask', { method: 'POST', body: JSON.stringify({ question, history }) });
-
 // Auth
 export const login = (email, password) =>
   request('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });

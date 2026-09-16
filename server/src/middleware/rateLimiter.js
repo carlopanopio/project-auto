@@ -23,11 +23,3 @@ export const authLimit = rateLimit({
   message: { error: 'Too many login attempts, please try again later.' },
 });
 
-// Tighter than the rest: every request here costs a model call.
-export const interviewLimit = rateLimit({
-  windowMs: 60 * 1000,
-  max: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'A lot of questions right now — try again in a moment.' },
-});

@@ -1,0 +1,250 @@
+{
+  "name": "Interview Bot - KB Ingestion",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "nodes": [
+    {
+      "id": "a1000000-0000-4000-8000-000000000001",
+      "name": "KB Ingest Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "interview-kb-ingest",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "webhookId": "a1000000-0000-4000-8000-0000000000ff"
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000002",
+      "name": "Check Ingest Token",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.headers?.[\"x-ingest-token\"] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "rightValue": "={{ $env.INTERVIEW_INGEST_TOKEN }}"
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000003",
+      "name": "Chunk Markdown",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        -96
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Split the KB on '## ' headings rather than a fixed character window. A resume section\n// is already a coherent unit of meaning, and a blind window would cut a role away from\n// its own bullets — exactly the retrieval failure that makes RAG look bad on short docs.\nconst markdown = $json.body?.markdown ?? '';\nif (!markdown.trim()) {\n  throw new Error('No markdown in request body');\n}\n\nconst MAX_CHARS = 1500;\nconst MIN_SUBSTANCE = 60;\n\n// A TODO line is a question for Carlo, not a fact about him. Embedding one would let the\n// bot retrieve a question as though it were an answer. The answer, when it exists, lives\n// in the '>' quote under it — so drop the prompt and its wrapped continuation lines, and\n// keep whatever the quote holds.\nfunction stripScaffolding(body) {\n  const lines = body.split('\\n');\n  const kept = [];\n\n  for (let i = 0; i < lines.length; i++) {\n    const line = lines[i];\n\n    if (/^\\s*[-*]?\\s*\\*{0,2}TODO/.test(line)) {\n      // Swallow the prompt's wrapped continuation lines: indented, not a quote, not a\n      // new bullet or heading.\n      while (\n        i + 1 < lines.length &&\n        /^\\s{2,}\\S/.test(lines[i + 1]) &&\n        !/^\\s*>/.test(lines[i + 1]) &&\n        !/^\\s*[-*]\\s/.test(lines[i + 1]) &&\n        !/^#{1,6}\\s/.test(lines[i + 1])\n      ) {\n        i++;\n      }\n      continue;\n    }\n\n    // '>' marks an answer slot. Empty means unanswered; text means Carlo filled it in.\n    if (/^\\s*>/.test(line)) {\n      const answer = line.replace(/^\\s*>\\s?/, '').trim();\n      if (answer) kept.push(answer);\n      continue;\n    }\n\n    kept.push(line);\n  }\n\n  return kept.join('\\n').replace(/\\n{3,}/g, '\\n\\n').trim();\n}\n\n// How much real content is left once markdown punctuation is discounted.\nconst substance = (text) => text.replace(/[>#|*_\\-\\s]/g, '').length;\n\nconst sections = markdown.split(/\\n(?=## )/g);\nconst chunks = [];\n\nfor (const section of sections) {\n  const text = section.trim();\n  if (!text) continue;\n\n  // The preamble above the first '## ' explains the file to whoever edits it; it says\n  // nothing about Carlo.\n  if (!text.startsWith('## ')) continue;\n\n  const heading = (text.match(/^##\\s+(.+)$/m)?.[1] ?? 'Overview')\n    .replace(/^\\d+\\.\\s*/, '')\n    .trim();\n\n  // The out-of-scope section is an instruction to the bot, already in the system prompt.\n  // Indexing it would let a question about salary retrieve the word \"salary\" and burn a\n  // retrieval slot on the rule instead of on content.\n  if (/out of scope/i.test(heading)) continue;\n\n  const body = stripScaffolding(text);\n  if (substance(body) < MIN_SUBSTANCE) continue;\n\n  if (body.length <= MAX_CHARS) {\n    chunks.push({ section: heading, content: body });\n    continue;\n  }\n\n  let buffer = '';\n  for (const para of body.split(/\\n\\n+/)) {\n    if ((buffer + '\\n\\n' + para).length > MAX_CHARS && buffer) {\n      chunks.push({ section: heading, content: buffer.trim() });\n      buffer = para;\n    } else {\n      buffer = buffer ? buffer + '\\n\\n' + para : para;\n    }\n  }\n  if (buffer.trim()) chunks.push({ section: heading, content: buffer.trim() });\n}\n\nif (!chunks.length) {\n  throw new Error('KB produced no chunks — is it still all TODOs?');\n}\n\nreturn chunks.map((c) => ({ json: c }));"
+      }
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000004",
+      "name": "Clear Existing Chunks",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        672,
+        -96
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM interview_chunks;",
+        "options": {}
+      },
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "QjJ9PL3qaHB2TfIo",
+          "name": "Demo - Postgres account"
+        }
+      }
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000005",
+      "name": "Embed Chunk",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        896,
+        -96
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"content\": { \"parts\": [ { \"text\": $(\"Chunk Markdown\").item.json.section + \"\\n\\n\" + $(\"Chunk Markdown\").item.json.content } ] }, \"outputDimensionality\": 768 } }}",
+        "options": {}
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zfL3ogvPQnlrVBZv",
+          "name": "Demo - Gemini API"
+        }
+      }
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000006",
+      "name": "Store Chunk",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1120,
+        -96
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO interview_chunks (section, content, embedding) VALUES ($1, $2, $3::vector);",
+        "options": {
+          "queryReplacement": "={{ [ $(\"Chunk Markdown\").item.json.section, $(\"Chunk Markdown\").item.json.content, \"[\" + $json.embedding.values.join(\",\") + \"]\" ] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "QjJ9PL3qaHB2TfIo",
+          "name": "Demo - Postgres account"
+        }
+      }
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000007",
+      "name": "Respond Ingested",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1344,
+        -96
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"ok\": true, \"chunks\": $(\"Chunk Markdown\").all().length } }}",
+        "options": {}
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "a1000000-0000-4000-8000-000000000008",
+      "name": "Respond Unauthorized",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        448,
+        128
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 401,
+        "responseBody": "={{ { \"ok\": false, \"error\": \"Invalid ingest token\" } }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "KB Ingest Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check Ingest Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Ingest Token": {
+      "main": [
+        [
+          {
+            "node": "Chunk Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Unauthorized",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chunk Markdown": {
+      "main": [
+        [
+          {
+            "node": "Clear Existing Chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear Existing Chunks": {
+      "main": [
+        [
+          {
+            "node": "Embed Chunk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed Chunk": {
+      "main": [
+        [
+          {
+            "node": "Store Chunk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Chunk": {
+      "main": [
+        [
+          {
+            "node": "Respond Ingested",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

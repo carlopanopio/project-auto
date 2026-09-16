@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { askInterview } from '../lib/api.js';
+import { askInterviewBot, N8nError } from '../lib/n8n.js';
 import styles from './InterviewBot.module.css';
 
 const STARTERS = [
@@ -38,17 +38,18 @@ export default function InterviewBot() {
     setStatus('loading');
 
     try {
-      const data = await askInterview(question, history);
-      setMessages((prev) => [...prev, { id: nextId++, role: 'assistant', text: data.answer }]);
-    } catch (err) {
+      const data = await askInterviewBot(question, history);
       setMessages((prev) => [
         ...prev,
-        {
-          id: nextId++,
-          role: 'assistant',
-          text: err.message || 'Something went wrong reaching the assistant — please try again.',
-          isError: true,
-        },
+        { id: nextId++, role: 'assistant', text: data.answer, sources: data.sources || [] },
+      ]);
+    } catch (err) {
+      const text = err instanceof N8nError
+        ? err.message
+        : 'Something went wrong reaching the assistant — please try again.';
+      setMessages((prev) => [
+        ...prev,
+        { id: nextId++, role: 'assistant', text, isError: true },
       ]);
     } finally {
       setStatus('idle');
@@ -95,6 +96,14 @@ export default function InterviewBot() {
                 }
               >
                 <p className={styles.bubbleText}>{m.text}</p>
+                {m.sources?.length > 0 && (
+                  <div className={styles.sources}>
+                    <span className={styles.sourcesLabel}>From</span>
+                    {m.sources.map((s, i) => (
+                      <span key={i} className={styles.sourcePill}>{s.title}</span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
 
