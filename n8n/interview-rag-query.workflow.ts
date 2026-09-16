@@ -64,7 +64,7 @@ const checkRateLimit = node({
     parameters: {
       resource: 'database',
       operation: 'executeQuery',
-      query: 'SELECT * FROM check_rate_limit($1, $2, $3);',
+      query: 'SELECT * FROM interview.check_rate_limit($1, $2, $3);',
       options: { queryReplacement: expr('{{ ["interview-chat", $json.ipHash, 24] }}') }
     },
     credentials: { postgres: { id: 'QjJ9PL3qaHB2TfIo', name: 'Demo - Postgres account' } },
@@ -120,7 +120,7 @@ const retrieveChunks = node({
     parameters: {
       resource: 'database',
       operation: 'executeQuery',
-      query: 'SELECT * FROM match_interview_chunks($1::vector, $2);',
+      query: 'SELECT * FROM interview.match_chunks($1::extensions.vector, $2);',
       options: { queryReplacement: expr('{{ ["[" + $json.embedding.values.join(",") + "]", 6] }}') }
     },
     credentials: { postgres: { id: 'QjJ9PL3qaHB2TfIo', name: 'Demo - Postgres account' } },
@@ -207,7 +207,7 @@ const logRateLimitEntry = node({
     parameters: {
       resource: 'database',
       operation: 'executeQuery',
-      query: 'INSERT INTO rate_limits (demo_key, ip_hash) VALUES ($1, $2);',
+      query: 'INSERT INTO interview.rate_limits (demo_key, ip_hash) VALUES ($1, $2);',
       options: { queryReplacement: expr('{{ ["interview-chat", $("Hash Visitor IP").item.json.ipHash] }}') }
     },
     credentials: { postgres: { id: 'QjJ9PL3qaHB2TfIo', name: 'Demo - Postgres account' } },

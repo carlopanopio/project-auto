@@ -29,7 +29,7 @@ const clearExistingChunks = node({
     parameters: {
       resource: 'database',
       operation: 'executeQuery',
-      query: 'DELETE FROM interview_chunks;',
+      query: 'DELETE FROM interview.chunks;',
       options: {}
     },
     credentials: { postgres: { id: 'QjJ9PL3qaHB2TfIo', name: 'Demo - Postgres account' } },
@@ -125,7 +125,7 @@ const storeChunk = node({
     parameters: {
       resource: 'database',
       operation: 'executeQuery',
-      query: 'INSERT INTO interview_chunks (section, content, embedding) VALUES ($1, $2, $3::vector);',
+      query: 'INSERT INTO interview.chunks (section, content, embedding) VALUES ($1, $2, $3::extensions.vector);',
       options: { queryReplacement: expr('{{ [$("Chunk Markdown").item.json.section, $("Chunk Markdown").item.json.content, "[" + $json.embedding.values.join(",") + "]"] }}') }
     },
     credentials: { postgres: { id: 'QjJ9PL3qaHB2TfIo', name: 'Demo - Postgres account' } },
